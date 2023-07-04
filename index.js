@@ -2,6 +2,7 @@ import dotenv from 'dotenv'
 import  mongoose from 'mongoose'
 import express from 'express'
 import sporranSession from './routes/sporranSession.js'
+import cors from 'cors'
 
 dotenv.config()
 
@@ -16,6 +17,26 @@ mongoose
   .catch((err) => console.log("Could not connect to db", err.message));
 
 const app = express();
+
+app.use(express.urlencoded({ extended: true }))
+app.use(express.json())
+
+/** Rules of our API */
+app.use(
+  cors({
+    origin: true,
+    optionsSuccessStatus: 200,
+    credentials: true,
+  }),
+)
+app.options(
+  '*',
+  cors({
+    origin: true,
+    optionsSuccessStatus: 200,
+    credentials: true,
+  }),
+)
 
 app.use("/api/session", sporranSession);
 
