@@ -1,7 +1,8 @@
 import dotenv from 'dotenv'
 import  mongoose from 'mongoose'
 import express from 'express'
-import sporranSession from './routes/sporranSession.js'
+import sporranSession from './routes/sporran/sporranSession.js'
+import sporranRequestAttestation from './routes/sporran/sporranRequestAttestation.js'
 import cors from 'cors'
 
 dotenv.config()
@@ -39,6 +40,7 @@ app.options(
 )
 
 app.use("/api/session", sporranSession);
+app.use("/api/request-attestation", sporranRequestAttestation);
 
 /** Healthcheck */
 app.get('/foot', (req, res, next) => res.status(200).json({ message: 'ball' }))
