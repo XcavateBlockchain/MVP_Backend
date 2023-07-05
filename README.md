@@ -7,13 +7,13 @@ NFT Marketplace backend to interact with the substrate node and sporran wallet.
 -   Clone
 
 ```sh
-git clone https://github.com/XcavateBlockchain/MarketplaceMVP_Backend
+git clone https://github.com/XcavateBlockchain/MVP_Backend
 ```
 
 -   Install dependencies
 
 ```sh
-cd MarketplaceMVP_Backend && npm i
+cd MVP_Backend && npm i
 ```
 
 -   Setup .env
@@ -30,9 +30,18 @@ Add following variable in .env.
 
 ```sh
 PORT="9090"
+URL=
+BLOCKCHAIN_ENDPOINT=
+DID=
+SECRET_PAYER_MNEMONIC=
+SECRET_AUTHENTICATION_MNEMONIC=
+SECRET_ASSERTION_METHOD_MNEMONIC=
+SECRET_KEY_AGREEMENT_MNEMONIC=
+ADMIN_USERNAME=
+ADMIN_PASSWORD=
 
 # MongoDB
-MONGO_DB_URL=<URL>
+MONGO_DB_URL=
 ```
 
 and populate the env variables
