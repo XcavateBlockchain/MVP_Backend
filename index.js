@@ -4,6 +4,9 @@ import express from 'express'
 import sporranSession from './routes/sporran/sporranSession.js'
 import sporranRequestAttestation from './routes/sporran/sporranRequestAttestation.js'
 import cors from 'cors'
+import Logging from './libraries/Logging.js'
+
+import userRouter from './routes/user.route.js'
 
 dotenv.config()
 
@@ -18,6 +21,18 @@ mongoose
   .catch((err) => console.log("Could not connect to db", err.message));
 
 const app = express();
+
+app.use((req, res, next) => {
+  /** Log the Request */
+  Logging.info(`Incomming -> Method: [${req.method}] - Url: [${req.url}] - IP: [${req.socket.remoteAddress}]`)
+
+  res.on('finish', () => {
+    /** Log the Response */
+    Logging.info(`Incomming -> Method: [${req.method}] - Url: [${req.url}] - IP: [${req.socket.remoteAddress}] - Status: [${res.statusCode}]`)
+  })
+
+  next()
+})
 
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
@@ -41,6 +56,7 @@ app.options(
 
 app.use("/api/session", sporranSession);
 app.use("/api/request-attestation", sporranRequestAttestation);
+app.use("/api/user", userRouter);
 
 /** Healthcheck */
 app.get('/foot', (req, res, next) => res.status(200).json({ message: 'ball' }))
