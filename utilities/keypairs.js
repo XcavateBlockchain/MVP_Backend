@@ -6,14 +6,16 @@ import { configuration } from './configuration.js';
 export const keypairsPromise = (async () => {
   await cryptoWaitReady();
 
-  const payer = Utils.Crypto.makeKeypairFromUri(configuration.payerMnemonic);
+  const payer = Utils.Crypto.makeKeypairFromUri(configuration.payerMnemonic, 'sr25519');
 
   const authentication = Utils.Crypto.makeKeypairFromUri(
     configuration.authenticationMnemonic,
+    'sr25519',
   );
 
   const assertionMethod = Utils.Crypto.makeKeypairFromUri(
     configuration.assertionMethodMnemonic,
+    'sr25519',
   );
 
   const keyAgreement = Utils.Crypto.makeEncryptionKeypairFromSeed(
