@@ -1,8 +1,9 @@
 import dotenv from 'dotenv'
-import  mongoose from 'mongoose'
+import mongoose from 'mongoose'
 import express from 'express'
 import sporranSession from './routes/sporran/sporranSession.js'
 import sporranRequestAttestation from './routes/sporran/sporranRequestAttestation.js'
+import sporranTerms from './routes/sporran/sporranTerms.js'
 import cors from 'cors'
 import Logging from './libraries/Logging.js'
 
@@ -16,11 +17,11 @@ mongoose
     process.env.MONGO_DB_URL
   )
   .then(() => {
-    console.log("Successfuly connected to  DB...");
+    console.log("Successfuly connected to  DB...")
   })
-  .catch((err) => console.log("Could not connect to db", err.message));
+  .catch((err) => console.log("Could not connect to db", err.message))
 
-const app = express();
+const app = express()
 
 app.use((req, res, next) => {
   /** Log the Request */
@@ -54,14 +55,15 @@ app.options(
   }),
 )
 
-app.use("/api/session", sporranSession);
-app.use("/api/request-attestation", sporranRequestAttestation);
-app.use("/api/user", userRouter);
+app.use("/api/session", sporranSession)
+app.use("/api/request-attestation", sporranRequestAttestation)
+app.use("/api/terms", sporranTerms)
+app.use("/api/user", userRouter)
 
 /** Healthcheck */
 app.get('/foot', (req, res, next) => res.status(200).json({ message: 'ball' }))
 
-const port = process.env.PORT || 3005;
+const port = process.env.PORT || 3005
 app.listen(port, () => {
-  console.log(`listening to port ${port}...`);
-});
+  console.log(`listening to port ${port}...`)
+})
