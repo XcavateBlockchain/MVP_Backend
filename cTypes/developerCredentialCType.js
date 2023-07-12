@@ -11,5 +11,5 @@ export const developerCredentialCtype = {
     idDoc2: { type: "string" }
   },
   type: 'object',
-  $id: 'kilt:ctype:0x4c5ff36428a9cb3d2c20d6cd8419842f08f412b2bdfbbd33ddc2df8120533bcc',
+  $id: 'kilt:ctype:0xc961223d14beee8ee1b626e5a657167c0bc8e08cf95b26eb31837d3740f9752d',
 }

@@ -16,25 +16,11 @@ const TERMS = 'https://example.com/terms-and-conditions'
 
 async function handler(request, response){
   try {
-    console.log('Submit terms started')
     logger.debug('Submit terms started')
     const { session } = request
     const { encryptionKeyUri } = session
 
-    const { type, claimContents } = request.body 
-    console.log('type :: ', type)
-    console.log('claimContents :: ', claimContents)
-    console.log('updated contents :: ', {
-      fullName: claimContents?.fullName || '',
-      phoneNumber: claimContents?.phoneNumber || '',
-      email: claimContents?.email || '',
-      profession: claimContents?.profession || '',
-      address: claimContents?.address || '',
-      idDoc1: claimContents?.idDoc1 || '',
-      idDoc2: claimContents?.idDoc2 || '',
-    })
-    console.log('supportedCTypes[type] :: ', supportedCTypes[type])
-    console.log('did :: ', session.did)
+    const { type, claimContents } = request.body
 
     const claim = Claim.fromCTypeAndClaimContents(
       supportedCTypes[type],
@@ -49,7 +35,6 @@ async function handler(request, response){
       },
       session.did,
     )
-    console.log('claim :: ', claim)
     logger.debug('Generated claim')
 
     const quote = {

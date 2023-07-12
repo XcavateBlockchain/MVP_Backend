@@ -11,6 +11,8 @@ const UserSchema = new Schema(
     idDoc2: String,
     did: String,
     role: String,
+    paid: Boolean,
+    attested: Boolean,
   },
   {
     versionKey: false,
