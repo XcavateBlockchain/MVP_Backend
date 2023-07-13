@@ -72,3 +72,11 @@ export const create = async (req, res) => {
     })
   }
 }
+
+export const addCredential = async (req, res) => {
+  try {
+    
+  } catch (error) {
+    
+  }
+}
