@@ -16,10 +16,12 @@ const UserSchema = new Schema(
     attested: Boolean,
     profileImage: String,
     bannerImage: String,
+    isLocked: Boolean,
+    isVerified: Boolean,
     credentials: [
       {
         type: Schema.Types.ObjectId,
-        ref: 'Credential',
+        ref: 'CredentialModel',
       }
     ],
     tokens: [      

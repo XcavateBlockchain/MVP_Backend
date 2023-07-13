@@ -10,7 +10,6 @@ const unlinkFile = util.promisify(fs.unlink)
 export const create = async (req, res) => {
   try {
     const { body } = req
-    console.log('req :: ', req.files)
 
     // upload image to S3
     let uploadFilePromises = []
@@ -51,10 +50,14 @@ export const create = async (req, res) => {
           ..._image,
         })
         const doc = await user.save()
+        const token = await doc.generateAuthToken()
 
         return res.status(StatusCodes.CREATED).send({
           error: null,
-          data: doc,
+          data: {
+            user: doc,
+            token: token,
+          },
         })
       })
       .catch((err) => {
@@ -68,6 +71,50 @@ export const create = async (req, res) => {
     console.log('creating error :: ', err)
     return res.status(StatusCodes.BAD_REQUEST).send({
       error: err.toString(),
+      data: null,
+    })
+  }
+}
+
+export const connectDid = async (req, res) => {
+  try {
+    const { did } = req.body
+
+    const existingUser = await User.findOne({
+      did,
+    })
+
+    // If user doesn't exist, create a new one
+    if (!existingUser) {
+      return res.status(StatusCodes.NO_CONTENT).send({
+        error: `No credential linked with this did: ${did}`,
+        data: null
+      })
+    } else {
+      if (existingUser?.isLocked) {
+        return res.status(StatusCodes.LOCKED).send({
+          error: 'Your account was locked by some reason',
+          data: null,
+        })
+      } else {
+        const token = await existingUser.generateAuthToken()
+
+        return res.status(StatusCodes.ACCEPTED).send({
+          error: null,
+          data: {
+            user: existingUser,
+            token,
+          }
+        })
+      }
+    }
+  } catch (err) {
+    const errorMessage = typeof err === 'object' && err !== null
+      ? err.toString()
+      : 'Unexpected Error'
+
+    return res.status(StatusCodes.BAD_REQUEST).send({
+      error: errorMessage,
       data: null,
     })
   }

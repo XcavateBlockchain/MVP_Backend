@@ -3,17 +3,21 @@ import { Credential, CType, Message, Quote } from '@kiltprotocol/sdk-js'
 import { StatusCodes } from 'http-status-codes'
 import { decrypt } from '../../utilities/cryptoCallbacks.js'
 import { logger } from '../../utilities/logger.js'
+import { auth } from '../../middleware/auth.js'
 import {
   sessionMiddleware,
   setSession,
 } from '../../utilities/sessionStorage.js'
 import { supportedCTypes } from '../../utilities/supportedCTypes.js'
+import { CredentialModel } from '../../models/credential.model.js'
+import { User } from '../../models/user.model.js'
 
 const router = express.Router()
 
 async function handler(request, response){
   try {
     logger.debug('Handling attestation request')
+    const { _id } = request.user
 
     const message = await Message.decrypt(request.body, decrypt)
     const messageBody = message.body
@@ -51,13 +55,40 @@ async function handler(request, response){
     const { session } = request
     setSession({ ...session, credential })
 
+    // storing credential to the proper credential owner
+    const cDoc = new CredentialModel({
+      userId: _id,
+      cTypeTitle: 'developerCredential',
+      cTypeHash: credential?.claim?.cTypeHash || '',
+      contents: credential?.claim?.contents || {},
+      owner: credential?.claim?.owner || '',
+      rootHash: credential?.rootHash || '',
+      attested: false,
+    })
+    const doc = await cDoc.save()
+
+    const user = await User.findByIdAndUpdate(
+      _id,
+      {
+        $push: {
+          credentials: doc?._id,
+        },
+      },
+      {
+        new: true,
+      },
+    )
+
     logger.debug('Request attestation complete')
-    response.sendStatus(StatusCodes.NO_CONTENT)
+    response.status(StatusCodes.CREATED).send({
+      error: null,
+      data: user,
+    })
   } catch (error) {
     response.status(StatusCodes.INTERNAL_SERVER_ERROR).send(error)
   }
 }
 
-router.post('/', sessionMiddleware, handler)
+router.post('/', auth, sessionMiddleware, handler)
 
 export default router

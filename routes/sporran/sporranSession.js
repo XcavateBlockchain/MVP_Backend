@@ -21,7 +21,6 @@ async function handler(request, response) {
     const payload = request.body
     const { encryptionKeyUri, encryptedChallenge, nonce } = payload
     const { session } = request
-    console.log(request)
 
     const encryptionKey = await Did.resolveKey(encryptionKeyUri)
 
@@ -38,7 +37,6 @@ async function handler(request, response) {
     logger.debug('Session confirmation decrypted challenge')
 
     const decryptedChallenge = Utils.Crypto.u8aToHex(data)
-    console.log(session)
     const originalChallenge = session.didChallenge
 
     if (decryptedChallenge !== originalChallenge) {
