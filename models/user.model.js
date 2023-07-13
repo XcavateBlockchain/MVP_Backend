@@ -1,4 +1,5 @@
 import mongoose, { Schema } from 'mongoose'
+import jwt from 'jsonwebtoken'
 
 const UserSchema = new Schema(
   {
@@ -11,12 +12,47 @@ const UserSchema = new Schema(
     idDoc2: String,
     did: String,
     role: String,
+    paid: Boolean,
+    attested: Boolean,
+    profileImage: String,
+    bannerImage: String,
+    isLocked: Boolean,
+    isVerified: Boolean,
+    credentials: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'CredentialModel',
+      }
+    ],
+    tokens: [      
+      {
+        token: {
+          type: String,
+          required: true,
+        },
+      },
+    ],
   },
   {
     versionKey: false,
     timestamps: true,
   }
 )
+
+UserSchema.methods.generateAuthToken = async function () {
+  const user = this
+  const token = jwt.sign(
+    {
+      _id: user._id.toString(),
+    },
+    process.env.JWT_SECRET,
+  )
+
+  user.tokens = user.tokens.concat({ token })
+  await user.save()
+
+  return token
+}
 
 const User = mongoose.model('user', UserSchema)
 

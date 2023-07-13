@@ -20,11 +20,19 @@ async function handler(request, response){
     const { session } = request
     const { encryptionKeyUri } = session
 
-    const { type, claimContents } = request.body 
+    const { type, claimContents } = request.body
 
     const claim = Claim.fromCTypeAndClaimContents(
       supportedCTypes[type],
-      claimContents,
+      {
+        fullName: claimContents?.fullName || '',
+        phoneNumber: claimContents?.phoneNumber || '',
+        email: claimContents?.email || '',
+        profession: claimContents?.profession || '',
+        address: claimContents?.address || '',
+        idDoc1: claimContents?.idDoc1 || '',
+        idDoc2: claimContents?.idDoc2 || '',
+      },
       session.did,
     )
     logger.debug('Generated claim')

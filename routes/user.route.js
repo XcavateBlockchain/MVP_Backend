@@ -1,6 +1,6 @@
 import express from 'express'
 import multer from 'multer'
-import { create } from '../controllers/user.controller.js'
+import { connectDid, create } from '../controllers/user.controller.js'
 
 const router = express.Router()
 
@@ -14,5 +14,6 @@ router.post(
   ])],
   create,
 )
+router.post('/connect-did', connectDid)
 
 export default router
