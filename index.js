@@ -8,6 +8,7 @@ import cors from 'cors'
 import Logging from './libraries/Logging.js'
 
 import userRouter from './routes/user.route.js'
+import credentialsRouter from './routes/credential.route.js'
 
 dotenv.config()
 
@@ -59,6 +60,7 @@ app.use("/api/session", sporranSession)
 app.use("/api/request-attestation", sporranRequestAttestation)
 app.use("/api/terms", sporranTerms)
 app.use("/api/user", userRouter)
+app.use("/api/credentials", credentialsRouter)
 
 /** Healthcheck */
 app.get('/foot', (req, res, next) => res.status(200).json({ message: 'ball' }))

@@ -60,10 +60,11 @@ async function handler(request, response){
       userId: _id,
       cTypeTitle: 'developerCredential',
       cTypeHash: credential?.claim?.cTypeHash || '',
-      contents: credential?.claim?.contents || {},
+      contents: credential || {},
       owner: credential?.claim?.owner || '',
       rootHash: credential?.rootHash || '',
       attested: false,
+      revoked: false,
     })
     const doc = await cDoc.save()
 
