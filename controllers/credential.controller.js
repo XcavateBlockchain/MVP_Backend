@@ -2,6 +2,7 @@ import { StatusCodes } from 'http-status-codes'
 import { CredentialModel } from '../models/credential.model.js'
 import { attest } from '../utilities/attest.js'
 import { logger } from '../utilities/logger.js'
+import { revoke } from '../utilities/revoke.js'
 
 export const getCredentialsToAttest = async (req, res) => {
   try {
@@ -104,6 +105,65 @@ export const attestCredential = async (req, res) => {
         } else {
           return res.status(StatusCodes.NO_CONTENT).send({
             error: 'Not acceptable to attest',
+            data: null,
+          })
+        }
+      } else {
+        return res.status(StatusCodes.NO_CONTENT).send({
+          error: 'Not found a credential',
+          data: null,
+        })
+      }
+    } else {
+      return res.status(StatusCodes.NO_CONTENT).send({
+        error: 'Missed credential id',
+        data: null,
+      })
+    }
+  } catch (err) {
+    console.log('attestation error :: ', err)
+    return res.send({
+      error: err.toString(),
+      data: null,
+    })
+  }
+}
+
+export const revokeCredential = async (req, res) => {
+  try {
+    const { id } = req.params
+    if (id) {
+      const credential = await CredentialModel.findById(id)
+
+      logger.debug(`Getting credential`)
+      if (credential?.contents) {
+        logger.debug('Revoking credential')
+        const contents = credential.contents
+        const attestation = await revoke(contents)
+
+        logger.debug('Credential revoked, updating database')
+        if (attestation?.claimHash) {
+          await CredentialModel.findByIdAndUpdate(
+            id,
+            {
+              $set: {
+                revoked: true,
+              },
+            },
+            {
+              new: true,
+            },
+          )
+
+          const uCredential = await CredentialModel.findById(id)
+
+          return res.status(StatusCodes.OK).send({
+            error: null,
+            data: uCredential,
+          })
+        } else {
+          return res.status(StatusCodes.NO_CONTENT).send({
+            error: 'Not acceptable to revoke',
             data: null,
           })
         }

@@ -1,15 +1,16 @@
 export const developerCredentialCtype = {
-  $schema: 'http://kilt-protocol.org/draft-01/ctype#',
-  title: 'Developer Credential',
+  '$schema': 'ipfs://bafybeiah66wbkhqbqn7idkostj2iqyan2tstc4tpqt65udlhimd7hcxjyq/',
+  additionalProperties: false,
   properties: {
-    fullName: { type: "string" },
-    phoneNumber: { type: "string" },
-    email: { type: "string" },
-    profession: { type: "string" },
-    address: { type: "string" },
-    idDoc1: { type: "string" },
-    idDoc2: { type: "string" }
+    address: { type: 'string' },
+    email: { type: 'string' },
+    fullName: { type: 'string' },
+    idDoc1: { type: 'string' },
+    idDoc2: { type: 'string' },
+    phoneNumber: { type: 'string' },
+    profession: { type: 'string' }
   },
+  title: 'Developer Credential',
   type: 'object',
-  $id: 'kilt:ctype:0xc961223d14beee8ee1b626e5a657167c0bc8e08cf95b26eb31837d3740f9752d',
+  '$id': 'kilt:ctype:0x4c5ff36428a9cb3d2c20d6cd8419842f08f412b2bdfbbd33ddc2df8120533bcc',
 }
