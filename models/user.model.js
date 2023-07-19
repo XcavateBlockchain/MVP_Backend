@@ -54,6 +54,6 @@ UserSchema.methods.generateAuthToken = async function () {
   return token
 }
 
-const User = mongoose.model('user', UserSchema)
+const User = mongoose.model('User', UserSchema)
 
 export { User }

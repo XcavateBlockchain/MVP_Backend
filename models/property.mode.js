@@ -13,6 +13,6 @@ const PropertySchema = new Schema(
   }
 )
 
-const Property = mongoose.model('property', PropertySchema)
+const Property = mongoose.model('Property', PropertySchema)
 
 export { Property }

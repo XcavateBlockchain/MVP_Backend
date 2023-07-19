@@ -12,6 +12,7 @@ const CredentialSchema = new Schema(
     owner: String,
     rootHash: String,
     attested: Boolean,
+    revoked: Boolean,
   },
   {
     versionKey: false,
@@ -19,6 +20,6 @@ const CredentialSchema = new Schema(
   }
 )
 
-const CredentialModel = mongoose.model('credential', CredentialSchema)
+const CredentialModel = mongoose.model('Credential', CredentialSchema)
 
 export { CredentialModel }

@@ -42,7 +42,7 @@ async function handler(request, response){
       logger.debug('Quote agreement verified')
     }
 
-    await Credential.verifyCredential(credential)
+    Credential.verifyDataStructure(credential)
     logger.debug('Credential data structure verified')
 
     const cTypes = Object.values(supportedCTypes)
@@ -60,10 +60,11 @@ async function handler(request, response){
       userId: _id,
       cTypeTitle: 'developerCredential',
       cTypeHash: credential?.claim?.cTypeHash || '',
-      contents: credential?.claim?.contents || {},
+      contents: credential || {},
       owner: credential?.claim?.owner || '',
       rootHash: credential?.rootHash || '',
       attested: false,
+      revoked: false,
     })
     const doc = await cDoc.save()
 
