@@ -1,4 +1,4 @@
-import { naclOpen, naclSeal } from '@polkadot/util-crypto';
+import { Utils } from '@kiltprotocol/sdk-js';
 
 import { keypairsPromise } from './keypairs.js';
 import { didDocumentPromise } from './didDocument.js';
@@ -47,37 +47,36 @@ export async function encrypt({
   const { did, keyAgreementKey } = await didDocumentPromise;
   const keyUri = `${did}${keyAgreementKey.id}`;
 
-  const { sealed, nonce } = naclSeal(
+  const { box, nonce } = Utils.Crypto.encryptAsymmetric(
     data,
-    keyAgreement.secretKey,
     peerPublicKey,
+    keyAgreement.secretKey,
   );
 
   return {
-    data: sealed,
+    data: box,
     nonce,
     keyUri,
   };
 }
 
 export async function decrypt({
-  data,
+  data: box,
   nonce,
   peerPublicKey,
 }) {
   const { keyAgreement } = await keypairsPromise;
 
-  const decrypted = naclOpen(
-    data,
-    nonce,
+  const data = Utils.Crypto.decryptAsymmetric(
+    { box, nonce },
     peerPublicKey,
     keyAgreement.secretKey,
   );
-  if (!decrypted) {
+  if (!data) {
     throw new Error('Failed to decrypt with given key');
   }
 
   return {
-    data: decrypted,
+    data,
   };
 }
