@@ -2,7 +2,7 @@ import mongoose, { Schema } from 'mongoose'
 
 const CredentialSchema = new Schema(
   {
-    userId: {
+    user: {
       type: Schema.Types.ObjectId,
       ref: 'User',
     },

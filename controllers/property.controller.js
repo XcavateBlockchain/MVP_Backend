@@ -68,7 +68,7 @@ export const create = async (req, res) => {
         const property = new Property({
           ...body,
           ..._image,
-          userId: _id,
+          user: _id,
           images: _images,
           features,
           address: {
@@ -105,9 +105,9 @@ export const getAllProperties = async (req, res) => {
     const { _id } = req.user
 
     const properties = await Property.find({
-      userId: _id,
+      user: _id,
     })
-      .populate('userId')
+      .populate('user')
 
     return res.status(StatusCodes.OK).send({
       error: null,

@@ -10,7 +10,7 @@ export const getCredentialsToAttest = async (req, res) => {
       attested: false,
       revoked: false,
     })
-      .populate('userId')
+      .populate('user')
 
     return res.status(StatusCodes.OK).send({
       error: null,
@@ -30,7 +30,7 @@ export const getCredentialsAttested = async (req, res) => {
       attested: true,
       revoked: false,
     })
-      .populate('userId')
+      .populate('user')
 
     return res.status(StatusCodes.OK).send({
       error: null,

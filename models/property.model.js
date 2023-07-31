@@ -2,7 +2,7 @@ import mongoose, { Schema } from 'mongoose'
 
 const PropertySchema = new Schema(
   {
-    userId: {
+    user: {
       type: Schema.Types.ObjectId,
       ref: 'User',
     },

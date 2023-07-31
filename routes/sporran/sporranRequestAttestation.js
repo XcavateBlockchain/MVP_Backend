@@ -57,7 +57,7 @@ async function handler(request, response){
 
     // storing credential to the proper credential owner
     const cDoc = new CredentialModel({
-      userId: _id,
+      user: _id,
       cTypeTitle: 'developerCredential',
       cTypeHash: credential?.claim?.cTypeHash || '',
       contents: credential || {},

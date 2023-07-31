@@ -10,6 +10,7 @@ import Logging from './libraries/Logging.js'
 import userRouter from './routes/user.route.js'
 import credentialsRouter from './routes/credential.route.js'
 import propertyRouter from './routes/property.route.js'
+import collectionRouter from './routes/collection.route.js'
 
 dotenv.config()
 
@@ -63,6 +64,7 @@ app.use("/api/terms", sporranTerms)
 app.use("/api/user", userRouter)
 app.use("/api/credentials", credentialsRouter)
 app.use("/api/property", propertyRouter)
+app.use("/api/collection", collectionRouter)
 
 /** Healthcheck */
 app.get('/foot', (req, res, next) => res.status(200).json({ message: 'ball' }))
