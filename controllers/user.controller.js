@@ -120,10 +120,73 @@ export const connectDid = async (req, res) => {
   }
 }
 
-export const addCredential = async (req, res) => {
+export const updateRole = async (req, res) => {
   try {
+    const { _id } = req.user
+    const { role } = req.body
     
+    await User.findByIdAndUpdate(
+      _id,
+      {
+        $set: {
+          role,
+        },
+      },
+      {
+        new: true,
+      },
+    )
+
+    const user = await User.findById(_id)
+
+    return res.status(StatusCodes.OK).send({
+      error: null,
+      data: user,
+    })
   } catch (error) {
-    
+    const errorMessage = typeof error === 'object' && error !== null
+      ? error.toString()
+      : 'Unexpected Error'
+
+    return res.status(StatusCodes.BAD_REQUEST).send({
+      error: errorMessage,
+      data: null,
+    })
+  }
+}
+
+export const updateProfileImage = async (req, res) => {
+  try {
+    const { _id } = req.user
+
+    const profileImage = req.files.profileImage
+
+    const profileImagekey = `${profileImage[0].filename}.${FILE_TYPES[profileImage[0].mimetype]}`
+    const uploadedImage = await uploadFile(profileImage[0], profileImagekey)
+    await unlinkFile(uploadedImage[0].path)
+
+    await User.findByIdAndUpdate(
+      _id,
+      {
+        $set: {
+          profileImage: `${process.env.CDN_URL}/${uploadedImage}` || '',
+        },
+      },
+      {
+        new: true,
+      },
+    )
+
+    const user = await User.findById(_id)
+
+    return res.status(StatusCodes.OK).send({
+      error: null,
+      data: user,
+    })
+  } catch (err) {
+    return res.status(StatusCodes.BAD_REQUEST).send({
+      error: err.toString(),
+      data: null,
+    })
   }
 }

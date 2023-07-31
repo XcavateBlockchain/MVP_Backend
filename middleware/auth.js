@@ -1,3 +1,4 @@
+import { StatusCodes } from 'http-status-codes'
 import { User } from '../models/user.model.js'
 import jwt from 'jsonwebtoken'
 
@@ -17,8 +18,8 @@ export const auth = async (req, res, next) => {
     req.user = user
     next()
   } catch (err) {
-    return res.status(HTTP_STATUS_CODES.UNAUTHORIZED).send({
-      error: ERROR_MESSAGES.UNAUTHORIZED,
+    return res.status(StatusCodes.UNAUTHORIZED).send({
+      error: err.toString(),
       data: null,
     })
   }
