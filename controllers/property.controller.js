@@ -10,6 +10,7 @@ const unlinkFile = util.promisify(fs.unlink)
 export const create = async (req, res) => {
   try {
     const { body } = req
+    const { _id } = req.user
 
     // upload image to S3
     let uploadFilePromises = []
@@ -67,6 +68,7 @@ export const create = async (req, res) => {
         const property = new Property({
           ...body,
           ..._image,
+          userId: _id,
           images: _images,
           features,
           address: {
@@ -91,6 +93,27 @@ export const create = async (req, res) => {
       })
   } catch (err) {
     console.log('creating error :: ', err)
+    return res.status(StatusCodes.BAD_REQUEST).send({
+      error: err.toString(),
+      data: null,
+    })
+  }
+}
+
+export const getAllProperties = async (req, res) => {
+  try {
+    const { _id } = req.user
+
+    const properties = await Property.find({
+      userId: _id,
+    })
+      .populate('userId')
+
+    return res.status(StatusCodes.OK).send({
+      error: null,
+      data: properties,
+    })
+  } catch (error) {
     return res.status(StatusCodes.BAD_REQUEST).send({
       error: err.toString(),
       data: null,

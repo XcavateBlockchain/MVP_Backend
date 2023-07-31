@@ -1,6 +1,6 @@
 import express from 'express'
 import multer from 'multer'
-import { create } from '../controllers/property.controller.js'
+import { create, getAllProperties } from '../controllers/property.controller.js'
 import { auth } from '../middleware/auth.js'
 
 const router = express.Router()
@@ -16,5 +16,6 @@ router.post(
   ])],
   create,
 )
+router.get('/', auth, getAllProperties)
 
 export default router

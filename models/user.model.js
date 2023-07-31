@@ -18,6 +18,7 @@ const UserSchema = new Schema(
     bannerImage: String,
     isLocked: Boolean,
     isVerified: Boolean,
+    isRejected: Boolean,
     credentials: [
       {
         type: Schema.Types.ObjectId,

@@ -30,6 +30,10 @@ const PropertySchema = new Schema(
     localAuthority: String,
     titleDeadNumber: String,
     googleMapLink: String,
+    isVerified: Boolean,
+    isRejected: Boolean,
+    isLocked: Boolean,
+    isListed: Boolean,
   },
   {
     versionKey: false,
