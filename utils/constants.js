@@ -7,5 +7,6 @@ export const FILE_TYPES = {
   'image/gif': 'gif',
   'video/mp4': 'mp4',
   'image/svg+xml': 'svg',
-  'application/octet-stream': 'mov'
+  'application/octet-stream': 'mov',
+  'application/pdf': 'pdf',
 }
