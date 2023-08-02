@@ -120,3 +120,22 @@ export const getAllProperties = async (req, res) => {
     })
   }
 }
+
+export const getPropertyById = async (req, res) => {
+  try {
+    const { propertyId } = req.params
+    
+    const property = await Property.findById(propertyId)
+      .populate('user')
+    
+    return res.status(StatusCodes.OK).send({
+      error: null,
+      data: property,
+    })
+  } catch (error) {
+    return res.status(StatusCodes.BAD_REQUEST).send({
+      error: error.toString(),
+      data: null,
+    })
+  }
+}
