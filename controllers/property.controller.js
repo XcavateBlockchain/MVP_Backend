@@ -108,6 +108,7 @@ export const getAllProperties = async (req, res) => {
       user: _id,
     })
       .populate('user')
+      .populate('collect')
 
     return res.status(StatusCodes.OK).send({
       error: null,
@@ -127,6 +128,7 @@ export const getPropertyById = async (req, res) => {
     
     const property = await Property.findById(propertyId)
       .populate('user')
+      .populate('collect')
     
     return res.status(StatusCodes.OK).send({
       error: null,

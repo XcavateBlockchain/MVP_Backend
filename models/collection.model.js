@@ -7,6 +7,10 @@ const CollectionSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: 'User',
     },
+    property: {
+      type: Schema.Types.ObjectId,
+      ref: 'Property',
+    },
     owner: String,
     isFrozen: Boolean,
     isDestroyed: Boolean,
