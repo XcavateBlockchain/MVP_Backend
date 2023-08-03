@@ -6,6 +6,10 @@ const PropertySchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: 'User',
     },
+    collect: {
+      type: Schema.Types.ObjectId,
+      ref: 'Collection',
+    },
     name: String,
     number: String,
     address: {

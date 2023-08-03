@@ -1,21 +1,44 @@
 import { StatusCodes } from 'http-status-codes'
 import { Collection } from '../models/collection.model.js'
+import { Property } from '../models/property.model.js'
 
 export const create = async (req, res) => {
   try {
     const { _id } = req.user
-    const { id, owner } = req.body
-
+    const { id, owner, propertyId, page } = req.body
+    
     const collection = new Collection({
       id,
       owner,
       user: _id,
+      property: propertyId,
     })
     const doc = await collection.save()
 
+    const property = await Property.findByIdAndUpdate(
+      propertyId,
+      {
+        $set: {
+          collect: doc._id,
+          isListed: true,
+        },
+      },
+      {
+        new: true,
+      },
+    )
+      .populate('user')
+      .populate('collect')
+
+    const properties = await Property.find({
+      user: _id,
+    })
+      .populate('user')
+      .populate('collect')
+
     return res.status(StatusCodes.CREATED).send({
       error: null,
-      data: doc,
+      data: page === 'Detail' ? property : properties,
     })
   } catch (error) {
     console.log('collection creation error :: ', error)
