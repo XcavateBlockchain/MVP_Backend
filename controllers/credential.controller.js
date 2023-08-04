@@ -3,6 +3,7 @@ import { CredentialModel } from '../models/credential.model.js'
 import { attest } from '../utilities/attest.js'
 import { logger } from '../utilities/logger.js'
 import { revoke } from '../utilities/revoke.js'
+import { User } from '../models/user.model.js'
 
 export const getCredentialsToAttest = async (req, res) => {
   try {
@@ -89,6 +90,19 @@ export const attestCredential = async (req, res) => {
             {
               $set: {
                 attested: true,
+              },
+            },
+            {
+              new: true,
+            },
+          )
+
+          // update `isVerified: true` for the user - credential's owner
+          await User.findByIdAndUpdate(
+            credential?.user,
+            {
+              $set: {
+                isVerified: true,
               },
             },
             {
