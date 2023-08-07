@@ -34,10 +34,22 @@ const PropertySchema = new Schema(
     localAuthority: String,
     titleDeadNumber: String,
     googleMapLink: String,
-    isVerified: Boolean,
-    isRejected: Boolean,
-    isLocked: Boolean,
-    isListed: Boolean,
+    isVerified: {
+      type: Boolean,
+      default: false,
+    },
+    isRejected: {
+      type: Boolean,
+      default: false,
+    },
+    isLocked: {
+      type: Boolean,
+      default: false,
+    },
+    isListed: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     versionKey: false,
