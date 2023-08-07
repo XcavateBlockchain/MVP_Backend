@@ -102,6 +102,29 @@ export const create = async (req, res) => {
 
 export const getAllProperties = async (req, res) => {
   try {
+    const properties = await Property.find({
+      isVerified: true,
+      isListed: true,
+      isRejected: false,
+      isLocked: false,
+    })
+      .populate('user')
+      .populate('collect')
+
+    return res.status(StatusCodes.OK).send({
+      error: null,
+      data: properties,
+    })
+  } catch (error) {
+    return res.status(StatusCodes.BAD_REQUEST).send({
+      error: err.toString(),
+      data: null,
+    })
+  }
+}
+
+export const getAllPropertiesByUser = async (req, res) => {
+  try {
     const { _id } = req.user
 
     const properties = await Property.find({

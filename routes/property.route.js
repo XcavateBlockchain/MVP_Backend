@@ -1,6 +1,6 @@
 import express from 'express'
 import multer from 'multer'
-import { create, getAllProperties, getPropertyById } from '../controllers/property.controller.js'
+import { create, getAllProperties, getAllPropertiesByUser, getPropertyById } from '../controllers/property.controller.js'
 import { auth } from '../middleware/auth.js'
 
 const router = express.Router()
@@ -16,7 +16,8 @@ router.post(
   ])],
   create,
 )
-router.get('/', auth, getAllProperties)
+router.get('/', getAllProperties)
+router.get('/getPropertiesByUser', auth, getAllPropertiesByUser)
 router.get('/getPropertyById/:propertyId', getPropertyById)
 
 export default router
