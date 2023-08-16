@@ -1,9 +1,13 @@
-import { FILE_TYPES } from '../utils/constants.js'
-import { uploadFile } from '../utils/aws_s3.js'
+import { FILE_TYPES } from '../utilities/constants.js'
+import { uploadFile } from '../utilities/aws_s3.js'
 import { StatusCodes } from 'http-status-codes'
 import util from 'util'
 import fs from 'fs'
 import { Property } from '../models/property.model.js'
+
+import path from 'path'
+import { create as ipfsCreate } from 'ipfs-http-client'
+import { addFile, addPrepaid, getOrderState, placeStorageOrder } from '../utilities/crust.js'
 
 const unlinkFile = util.promisify(fs.unlink)
 
@@ -157,6 +161,55 @@ export const getPropertyById = async (req, res) => {
       error: null,
       data: property,
     })
+  } catch (error) {
+    return res.status(StatusCodes.BAD_REQUEST).send({
+      error: error.toString(),
+      data: null,
+    })
+  }
+}
+
+export const uploadFilesToCrust = async (req, res) => {
+  try {
+    const ipfsW3GW = process.env.CRUST_IPFS_W3GW // More web3 authed gateways: https://github.com/crustio/ipfsscan/blob/main/lib/constans.ts#L29
+
+    // I. Upload file to IPFS
+    // 1. Read file
+    const filePath = 'sampleFile.txt'
+    const fileContent = await fs.readFileSync(path.resolve(__dirname, filePath))
+
+    // 2. [Gateway] Create IPFS instance
+    // Now support: ethereum-series, polkadot-series, solana, elrond, flow, near, ...
+    // Let's take ethereum as example
+    // const pair = ethers.Wallet.createRandom()
+    // const sig = await pair.signMessage(pair.address)
+    // const authHeaderRaw = `eth-${pair.address}:${sig}`
+    // const authHeader = Buffer.from(authHeaderRaw).toString('base64')
+    const ipfsRemote = ipfsCreate({
+      url: `${ipfsW3GW}/api/v0`,
+      // headers: {
+      //   authorization: `Basic ${authHeader}`
+      // }
+    })
+
+    // 3. Add IPFS
+    const rst = await addFile(ipfsRemote, fileContent) // Or use IPFS local
+    console.log(rst)
+
+    // II. Place storage order
+    await placeStorageOrder(rst.cid, rst.size)
+    // III. [OPTIONAL] Add prepaid
+    // Learn what's prepard for: https://wiki.crust.network/docs/en/DSM#3-file-order-assurance-settlement-and-discount
+    const addedAmount = 100 // in pCRU, 1 pCRU = 10^-12 CRU
+    await addPrepaid(rst.cid, addedAmount)
+
+    // IV. Query storage status
+    // Query forever here ...
+    while (true) {
+      const orderStatus = (await getOrderState(rst.cid)).toJSON()
+      console.log('Replica count: ', orderStatus['reported_replica_count']) // Print the replica count
+      await new Promise(f => setTimeout(f, 1500)) // Just wait 1.5s for next chain-query
+    }
   } catch (error) {
     return res.status(StatusCodes.BAD_REQUEST).send({
       error: error.toString(),

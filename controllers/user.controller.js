@@ -1,6 +1,6 @@
 import { User } from '../models/user.model.js'
-import { FILE_TYPES } from '../utils/constants.js'
-import { uploadFile } from '../utils/aws_s3.js'
+import { FILE_TYPES } from '../utilities/constants.js'
+import { uploadFile } from '../utilities/aws_s3.js'
 import { StatusCodes } from 'http-status-codes'
 import util from 'util'
 import fs from 'fs'
