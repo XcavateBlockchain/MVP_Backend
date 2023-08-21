@@ -44,17 +44,6 @@ SECRET_KEY_AGREEMENT_MNEMONIC=curtain chest safe roast place avocado faculty duc
 ADMIN_USERNAME=example
 ADMIN_PASSWORD=attester
 
-# MongoDB
-MONGO_DB_URL=mongodb+srv://almacosm:Securitypro1@cluster0.mchtlqy.mongodb.net/xcavate-dev
-
-# AWS S3
-S3_ACCESS_KEY=AKIA3CXDWBJJJWJDAE2J
-S3_SECRET_KEY=dQkkm1R8xkvjeeTBhtdtzzqzYA0ZeDJNKhKBNjxB
-AWS_REGION=us-east-1
-S3_BUCKET=xcavate-cdn
-CDN_URL=https://xcavate-cdn.s3.amazonaws.com
-```
-
 and populate the env variables
 
 - Run
