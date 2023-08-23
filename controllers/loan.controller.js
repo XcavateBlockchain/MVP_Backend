@@ -10,6 +10,7 @@ const unlinkFile = util.promisify(fs.unlink)
 export const create = async (req, res) => {
   try {
     const { body } = req
+    const { _id } = req.user
 
     // upload image to S3
     let uploadFilePromises = []
@@ -71,6 +72,7 @@ export const create = async (req, res) => {
         const loan = new Loan({
           ...body,
           ..._image,
+          user: _id,
         })
         const doc = await loan.save()
 
@@ -86,6 +88,27 @@ export const create = async (req, res) => {
           data: null,
         })
       })
+  } catch (error) {
+    return res.status(StatusCodes.BAD_REQUEST).send({
+      error: error.toString(),
+      data: null,
+    })
+  }
+}
+
+export const getLoansByUser = async (req, res) => {
+  try {
+    const { _id } = req.user
+
+    const loans = await Loan.find({
+      user: _id,
+    })
+      .populate('user')
+
+    return res.status(StatusCodes.OK).send({
+      error: null,
+      data: loans,
+    })
   } catch (error) {
     return res.status(StatusCodes.BAD_REQUEST).send({
       error: error.toString(),
