@@ -35,6 +35,10 @@ const LoanSchema = new Schema(
       type: Boolean,
       default: false,
     },
+    isCanceled: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     versionKey: false,
