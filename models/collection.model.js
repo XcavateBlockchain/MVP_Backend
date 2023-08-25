@@ -14,6 +14,11 @@ const CollectionSchema = new Schema(
     owner: String,
     isFrozen: Boolean,
     isDestroyed: Boolean,
+    loan: {
+      type: Schema.Types.ObjectId,
+      ref: 'Loan',
+    },
+    type: String,
   },
   {
     versionKey: false,

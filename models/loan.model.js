@@ -6,6 +6,10 @@ const LoanSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: 'User',
     },
+    collect: {
+      type: Schema.Types.ObjectId,
+      ref: 'Collection',
+    },
     planningPermissionCode: String,
     planningAuthority: String,
     landTitleDeedCode: String,
