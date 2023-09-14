@@ -119,7 +119,7 @@ export const getAllProperties = async (req, res) => {
       error: null,
       data: properties,
     })
-  } catch (error) {
+  } catch (err) {
     return res.status(StatusCodes.BAD_REQUEST).send({
       error: err.toString(),
       data: null,
@@ -141,7 +141,7 @@ export const getAllPropertiesByUser = async (req, res) => {
       error: null,
       data: properties,
     })
-  } catch (error) {
+  } catch (err) {
     return res.status(StatusCodes.BAD_REQUEST).send({
       error: err.toString(),
       data: null,
