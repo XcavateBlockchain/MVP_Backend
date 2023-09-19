@@ -1,6 +1,6 @@
-# XCavate NFT marketplace Backend
+# XCavate dApp Backend
 
-NFT Marketplace backend to interact with the substrate node and sporran wallet.
+dApp backend to interact with the substrate node and sporran wallet.
 
 ### Instructions
 
