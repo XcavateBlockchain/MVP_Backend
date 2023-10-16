@@ -22,19 +22,39 @@ async function handler(request, response){
 
     const { type, claimContents } = request.body
 
-    const claim = Claim.fromCTypeAndClaimContents(
-      supportedCTypes[type],
-      {
-        fullName: claimContents?.fullName || '',
-        phoneNumber: claimContents?.phoneNumber || '',
-        email: claimContents?.email || '',
-        profession: claimContents?.profession || '',
-        address: claimContents?.address || '',
-        idDoc1: claimContents?.idDoc1 || '',
-        idDoc2: claimContents?.idDoc2 || '',
-      },
-      session.did,
-    )
+    let claim = null
+
+    if (type === 'developerCredential') {
+      claim = Claim.fromCTypeAndClaimContents(
+        supportedCTypes[type],
+        {
+          fullName: claimContents?.fullName || '',
+          phoneNumber: claimContents?.phoneNumber || '',
+          email: claimContents?.email || '',
+          profession: claimContents?.profession || '',
+          address: claimContents?.address || '',
+          idDoc1: claimContents?.idDoc1 || '',
+          idDoc2: claimContents?.idDoc2 || '',
+        },
+        session.did,
+      )
+    } else if (type === 'company') {
+      claim = Claim.fromCTypeAndClaimContents(
+        supportedCTypes[type],
+        {
+          address: claimContents?.address || '',
+          associationMembershipNumber: claimContents?.associationMembershipNumber || '',
+          associationWebsite: claimContents?.associationWebsite || '',
+          email: claimContents?.email || '',
+          idDoc1: claimContents?.idDoc1 || '',
+          idDoc2: claimContents?.idDoc2 || '',
+          name: claimContents?.name || '',
+          phoneNumber: claimContents?.phoneNumber || '',
+          registrationNumber: claimContents?.registrationNumber || '',
+        },
+        session.did,
+      )
+    }
     logger.debug('Generated claim')
 
     const quote = {

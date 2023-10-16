@@ -1,17 +1,18 @@
 export const companyCtype = {
-  $schema: 'http://kilt-protocol.org/draft-01/ctype#',
-  title: 'Company',
+  '$schema': 'ipfs://bafybeiah66wbkhqbqn7idkostj2iqyan2tstc4tpqt65udlhimd7hcxjyq/',
+  additionalProperties: false,
   properties: {
-    address: { type: "string" },
-    associationMembershipNumber: { type: "string" },
-    associationWebsite: { type: "string" },
-    companyEmail: { type: "string" },
-    companyName: { type: "string" },
-    companyRegNumber: { type: "number" },
-    companyTelephone: { type: "string" },
-    idDoc1: { type: "string" },
-    idDoc2: { type: "string" }
+    address: { type: 'string' },
+    associationMembershipNumber: { type: 'string' },
+    associationWebsite: { type: 'string' },
+    email: { type: 'string' },
+    idDoc1: { type: 'string' },
+    idDoc2: { type: 'string' },
+    name: { type: 'string' },
+    phoneNumber: { type: 'string' },
+    registrationNumber: { type: 'string' }
   },
+  title: 'Company',
   type: 'object',
-  $id: 'kilt:ctype:0x8b92874e649e1c7e634e44f542f967a34267ab16026e6b836c54e0f69b1b4015',
+  '$id': 'kilt:ctype:0xe0854777fe55eca0d87fb2f3cef4b011b42466b010d22c843a249b2eba63590f',
 }

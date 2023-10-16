@@ -19,10 +19,16 @@ const UserSchema = new Schema(
     isLocked: Boolean,
     isVerified: Boolean,
     isRejected: Boolean,
+    companies: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Company',
+      }
+    ],
     credentials: [
       {
         type: Schema.Types.ObjectId,
-        ref: 'CredentialModel',
+        ref: 'Credential',
       }
     ],
     tokens: [      

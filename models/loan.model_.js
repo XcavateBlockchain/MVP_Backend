@@ -10,7 +10,6 @@ const LoanSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: 'Collection',
     },
-    developmentExperience: Number,
     planningPermissionCode: String,
     planningAuthority: String,
     landTitleDeedCode: String,
