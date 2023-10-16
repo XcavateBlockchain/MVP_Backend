@@ -12,6 +12,7 @@ import credentialsRouter from './routes/credential.route.js'
 import propertyRouter from './routes/property.route.js'
 import collectionRouter from './routes/collection.route.js'
 import loanRouter from './routes/loan.route.js'
+import companyRouter from './routes/company.route.js'
 
 dotenv.config()
 
@@ -67,6 +68,7 @@ app.use("/api/credentials", credentialsRouter)
 app.use("/api/property", propertyRouter)
 app.use("/api/collection", collectionRouter)
 app.use("/api/loan", loanRouter)
+app.use("/api/company", companyRouter)
 
 /** Healthcheck */
 app.get('/foot', (req, res, next) => res.status(200).json({ message: 'ball' }))
