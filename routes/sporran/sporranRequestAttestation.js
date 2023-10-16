@@ -18,8 +18,11 @@ async function handler(request, response){
   try {
     logger.debug('Handling attestation request')
     const { _id } = request.user
+    const { body } = request
+    const { type: credentialType } = body
+    delete body?.type
 
-    const message = await Message.decrypt(request.body, decrypt)
+    const message = await Message.decrypt(body, decrypt)
     const messageBody = message.body
     logger.debug('Request attestation message decrypted')
 
@@ -58,7 +61,7 @@ async function handler(request, response){
     // storing credential to the proper credential owner
     const cDoc = new CredentialModel({
       user: _id,
-      cTypeTitle: 'developerCredential',
+      cTypeTitle: credentialType,
       cTypeHash: credential?.claim?.cTypeHash || '',
       contents: credential || {},
       owner: credential?.claim?.owner || '',
