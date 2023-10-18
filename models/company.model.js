@@ -6,6 +6,10 @@ const CompanySchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: 'User',
     },
+    credential: {
+      type: Schema.Types.ObjectId,
+      ref: 'Credential',
+    },
     name: String,
     registrationNumber: String,
     email: String,
@@ -15,10 +19,6 @@ const CompanySchema = new Schema(
     associationMembershipNumber: String,
     idDoc1: String,
     idDoc2: String,
-    attested: {
-      type: Boolean,
-      default: false,
-    },
   },
   {
     versionKey: false,
