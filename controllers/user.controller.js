@@ -110,6 +110,8 @@ export const connectDid = async (req, res) => {
     const existingUser = await User.findOne({
       did,
     })
+      .populate('companies')
+      .populate('credentials')
 
     // If user doesn't exist, create a new one
     if (!existingUser) {

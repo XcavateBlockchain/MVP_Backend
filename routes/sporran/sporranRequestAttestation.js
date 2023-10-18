@@ -58,6 +58,8 @@ async function handler(request, response){
     const { session } = request
     setSession({ ...session, credential })
 
+    logger.debug('Request attestation complete')
+
     // storing credential to the proper credential owner
     const cDoc = new CredentialModel({
       user: _id,
@@ -71,7 +73,7 @@ async function handler(request, response){
     })
     const doc = await cDoc.save()
 
-    const user = await User.findByIdAndUpdate(
+    await User.findByIdAndUpdate(
       _id,
       {
         $push: {
@@ -83,7 +85,10 @@ async function handler(request, response){
       },
     )
 
-    logger.debug('Request attestation complete')
+    const user = await User.findById(_id)
+      .populate('companies')
+      .populate('credentials')
+
     response.status(StatusCodes.CREATED).send({
       error: null,
       data: user,
