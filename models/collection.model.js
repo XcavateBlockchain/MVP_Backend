@@ -12,6 +12,7 @@ const CollectionSchema = new Schema(
       ref: 'Property',
     },
     owner: String,
+    seller: String,
     isFrozen: Boolean,
     isDestroyed: Boolean,
     loan: {

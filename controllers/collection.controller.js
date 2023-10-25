@@ -6,14 +6,15 @@ import { Loan } from '../models/loan.model.js'
 export const create = async (req, res) => {
   try {
     const { _id } = req.user
-    const { id, owner, propertyId, page } = req.body
+    const { id, owner, seller, propertyId, page, type } = req.body
     
     const collection = new Collection({
       id,
       owner,
+      seller,
       user: _id,
       property: propertyId,
-      type: 'property',
+      type,
     })
     const doc = await collection.save()
 
