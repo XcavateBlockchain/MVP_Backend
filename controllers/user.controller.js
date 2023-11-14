@@ -223,3 +223,42 @@ export const updateProfileImage = async (req, res) => {
     })
   }
 }
+
+export const updateBannerImage = async (req, res) => {
+  try {
+    const { _id } = req.user
+
+    const bannerImage = req.files.bannerImage
+
+    const bannerImagekey = `${bannerImage[0].filename}.${FILE_TYPES[bannerImage[0].mimetype]}`
+    const uploadedImage = await uploadFile(bannerImage[0], bannerImagekey)
+
+    await unlinkFile(bannerImage[0].path)
+
+    await User.findByIdAndUpdate(
+      _id,
+      {
+        $set: {
+          bannerImage: `${process.env.CDN_URL}/${uploadedImage}` || '',
+        },
+      },
+      {
+        new: true,
+      },
+    )
+
+    const user = await User.findById(_id)
+      .populate('companies')
+      .populate('credentials')
+
+    return res.status(StatusCodes.OK).send({
+      error: null,
+      data: user,
+    })
+  } catch (err) {
+    return res.status(StatusCodes.BAD_REQUEST).send({
+      error: err.toString(),
+      data: null,
+    })
+  }
+}

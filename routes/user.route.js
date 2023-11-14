@@ -1,6 +1,6 @@
 import express from 'express'
 import multer from 'multer'
-import { connectDid, create, updateProfileImage, updateRole } from '../controllers/user.controller.js'
+import { connectDid, create, updateBannerImage, updateProfileImage, updateRole } from '../controllers/user.controller.js'
 import { auth } from '../middleware/auth.js'
 
 const router = express.Router()
@@ -23,6 +23,13 @@ router.post(
     { name: 'profileImage', maxCount: 1 },
   ])],
   updateProfileImage,
+)
+router.post(
+  '/update-banner-image',
+  [auth, upload.fields([
+    { name: 'bannerImage', maxCount: 1 },
+  ])],
+  updateBannerImage,
 )
 
 export default router
